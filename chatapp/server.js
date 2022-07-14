@@ -50,7 +50,7 @@ app.post('/messages', (req, res) => {
     .then( censored => {
         if (censored) {
             console.log("censored words found", censored);
-            return Message.remove({_id: censored.id});
+            return Message.deleteOne({_id: censored.id});
         }
 
         io.emit('message', req.body)
