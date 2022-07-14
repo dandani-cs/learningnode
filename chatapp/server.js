@@ -42,25 +42,27 @@ app.post('/messages', (req, res) => {
     //         }
     //     })
 
-    message.save().then(() => {
-
-        Message.findOne({message: "badword"}, (err, censored) => {
-            if (censored) {
-                console.log("censored words found", censored);
-                Message.remove({_id: censored.id}, (err) => {
-                    console.log("removed censored message", err);
-                })
-            }
+    message.save()
+    .then(() => {
+        console.log("saved")
+        return Message.findOne({message: "badword"})
     })
+    .then( censored => {
+        if (censored) {
+            console.log("censored words found", censored);
+            return Message.remove({_id: censored.id});
+        }
 
         io.emit('message', req.body)
         res.sendStatus(200);
-
-    }).catch((err) => {
+    })
+    .catch((err) => {
         res.sendStatus(500);
         return console.log(err);
     });
 });
+
+
 
 io.on("connection", (socket) => {
     console.log("a user has connected");
