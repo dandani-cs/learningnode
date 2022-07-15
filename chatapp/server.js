@@ -19,10 +19,14 @@ var Message = mongoose.model('Message', {
 });
 
 app.get('/messages', (req, res) => {
-    Message.find({}, (err, messages) => {
-        res.send(messages);
+    Message.find({}, (err, messages) => res.send(messages))
+});
+
+app.get('/messages/:user', (req, res) => {
+    var user = req.params.user;
+    Message.find({name: user}, (err, messages) => {
+        res.send(messages)
     })
-    
 });
 
 app.post('/messages', async (req, res) => {

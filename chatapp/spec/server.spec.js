@@ -28,4 +28,10 @@ describe('get messages from user', () => {
             done();
         });
     });
+    it('name should be tim', (done) => {
+        request.get("http://localhost:3000/messages/Clay", (err, res) => {
+            expect(JSON.parse(res.body)[0].name).toEqual("Clay");
+            done();
+        });
+    })
 })
